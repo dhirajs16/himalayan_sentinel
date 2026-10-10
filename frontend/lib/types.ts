@@ -1,0 +1,2 @@
+export type RiskLevel = "Low" | "Moderate" | "High" | "Critical";
+export type Region = { id:string; name:string; province:string; basin:string; lat:number; lng:number; rainfall_mm:number; river_status:string; glacial_risk:string; reports:number; population_exposed:number; trend:number[]; rainfall_trend:number[]; risk:{score:number; level:RiskLevel; factors:Record<string,number>; weights:Record<string,number>} };
