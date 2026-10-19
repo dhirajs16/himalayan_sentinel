@@ -1,25 +1,15 @@
-# Technical Specification
+﻿# Technical specification
 
-## Architecture
-`Next.js client → FastAPI API → Open-Meteo / optional Supabase and AI provider`
+Next.js App Router + React/TypeScript + existing Tailwind theme, React Leaflet and Recharts connect to FastAPI/Pydantic through /api/v1. SQLAlchemy stores users, hashed sessions, private report metadata, incidents, alerts/versions/deliveries, sources/sync runs, observations, lake geometry and versioned assessment documents. SQLite supports local development; PostgreSQL migrations add PostGIS geometry and spatial indexes.
 
-The current proof of concept stores submitted reports in process memory. Seeded region, hydrology, glacial context, exposure, and trends are explicitly mock demonstration data.
+Raw files stay under data/. Reproducible Python scripts inspect, preprocess and import the local lake inventory. Static source rank, dynamic environment, exposure, completeness, evidence confidence and monitoring priority are separate concepts. The lake rules version persists every contribution and threshold. Legacy regional fixtures stay labelled simulated.
 
-## Risk model
-`rainfall × .30 + river level × .25 + glacial context × .20 + community reports × .15 + population exposure × .10`
+Opaque 15-minute access tokens remain in browser memory; eight-hour refresh tokens rotate through HttpOnly cookies. Server roles and assigned jurisdictions gate staff actions. Images have size/MIME/decoder/pixel checks, random private paths and metadata-free display derivatives. Public APIs never list unverified reports or exact reporter coordinates.
 
-Thresholds: Low 0–25, Moderate 26–50, High 51–75, Critical 76–100.
+Reports: Submitted → admin Escalated/Rejected → official Field verification requested/Verified/Rejected → Confirmed incident. Alerts: Draft → Pending approval → Approved → Published/Updated → Expired/Cancelled/Resolved. A published revision remains visible while its replacement is reviewed; editing resets approval. Admins cannot authorize publication. Every consequential decision is audited.
 
-## API
-- `GET /health`
-- `GET /regions`, `GET /regions/{id}`
-- `GET /risk/latest`, `POST /risk/calculate`
-- `GET /weather/{region_id}`
-- `GET /reports`, `POST /reports`
-- `POST /ai/explain-risk`, `POST /ai/generate-alert`
+Open-Meteo has timeouts, retry, persistent cache and explicit stale/demo handling. Optional Gemini returns schema-validated draft prose and supported evidence IDs; deterministic templates remain the offline fallback. AI cannot set scores or publish. Unsupported providers are explicit interfaces, not fabricated live feeds. A simple 30-minute scheduler recalculates and checks freshness/expiry.
 
-## Resilience
-The frontend includes the same seeded dataset as a network fallback. Explanation and alert endpoints use deterministic templates, so the core flow does not depend on paid AI access. A production extension can add provider calls without moving scoring out of `risk_engine.py`.
+See docs/architecture.md, docs/risk-methodology.md and OpenAPI at /docs for detailed contracts and limits. No production early-warning validation is claimed.
 
-## Data ethics
-Community reports are unverified observations. The UI must not label them as confirmed incidents. Every generated explanation and alert includes an official-warning disclaimer.
+The guided integration technical plan is in [devpost/spec.md](devpost/spec.md). Contextual data is served separately through `/api/v1/public/context`; original dangerous-lake assessments and publication authorization remain separate. Source transformations and population aggregates are reproducible ignored derivatives. Live district forecasts use persistent observations and explicit source modes.

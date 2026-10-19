@@ -1,29 +1,13 @@
-# Product Requirements Document
+﻿# Product requirements
 
-## Problem
-Risk data is fragmented and often difficult for citizens and municipal teams to interpret quickly. Himalayan Sentinel turns several signals into a single explainable view without claiming to be an official forecast.
+Himalayan Sentinel helps citizens and local responders inspect flood/GLOF indicators without presenting experimental scores as official forecasts.
 
-## Users
-- Citizens checking nearby conditions
-- Municipal staff preparing public notices
-- Responders prioritizing situational awareness
+Public users need an understandable situation map, source freshness, lake baseline and score explanation, published safety notices, bilingual safety labels and a private image-report form. Administrators need moderation, provider diagnostics, account/jurisdiction assignment and audit history. Assigned government officials need evidence review, incident confirmation, a response checklist and a controlled alert lifecycle.
 
-## Core experience
-On launch, users see a national situation summary and map. Selecting a marker updates the risk score, factor details, chart, explanation, and report form. Users can switch alert language and generate a shareable advisory.
+The primary success criterion is a demonstrated report-to-alert-to-resolution workflow with identity/location privacy, server authorization and clear simulation labels. Original lake data must remain unchanged, source ranks must remain independent of dynamic scores, and missing evidence must never imply safety. Provider failures must be explicit and recoverable.
 
-## Functional requirements
-1. Show all seeded regions and risk levels.
-2. Compute risk with documented weights and fixed thresholds.
-3. Display contributing factors and trend data.
-4. Generate English and Nepali explanations/alerts containing a disclaimer.
-5. Accept categorized community observations.
-6. Work with seeded data when third-party APIs or keys are unavailable.
+The public UI keeps the existing light teal visual theme, Leaflet and Recharts. Forms have labelled controls, focus states, actionable errors and mobile layouts. Critical public safety labels have English/Nepali translation keys. Reduced-motion preferences are respected in new charts/transitions.
 
-## Non-functional requirements
-- Responsive at mobile and desktop widths
-- Accessible labels and keyboard-operable controls
-- No API keys committed to source
-- Clear disclosure of mock data and limitations
+Verification includes deterministic API/security/import tests and browser workflows, plus TypeScript and production build checks. Remaining operational/data limitations are documented in README and docs/architecture.md. This plan records the current implementation scope; it does not establish the provenance of earlier planning documents.
 
-## Metrics
-Demo task completion, alert generation success, report submission success, and zero ambiguity that the prototype is not an official warning system.
+The current integration requirements are in [devpost/prd.md](devpost/prd.md): a public/staff evidence explorer, separate broader lake and historical-event datasets, live forecast provenance, contextual district population and a district-evidence link in the existing reviewed-notice workflow.

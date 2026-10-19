@@ -1,28 +1,72 @@
 import json
-import os
-from datetime import UTC, datetime
+from contextlib import asynccontextmanager
 from pathlib import Path
 
-import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from .config import settings
+from .context_api import router as context_router
+from .district_weather import router as district_weather_router
 from .risk_engine import calculate_risk, enrich_region
 from .schemas import AIRequest, CommunityReport, RiskFactors, StoredReport
+from .workflow import initialize, router
 
 DISCLAIMER = "This is a decision-support estimate, not an official disaster warning."
 DATA_PATH = Path(__file__).parent / "data" / "regions.json"
 REGIONS = json.loads(DATA_PATH.read_text(encoding="utf-8"))
-REPORTS: list[StoredReport] = []
 
-app = FastAPI(title="Himalayan Sentinel API", version="0.1.0")
+
+@asynccontextmanager
+async def lifespan(app):
+    initialize()
+    yield
+
+
+app = FastAPI(title="Himalayan Sentinel API", version="1.0.0", lifespan=lifespan)
+app.include_router(router)
+app.include_router(district_weather_router)
+app.include_router(context_router)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:3000").split(","),
+    allow_origins=settings.cors_origins.split(","),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
 )
+
+
+@app.middleware("http")
+async def secure_headers(request, call_next):
+    # Reject oversized multipart bodies before Starlette buffers them.
+    length = request.headers.get("content-length")
+    if (
+        request.method == "POST"
+        and request.url.path == "/api/v1/reports"
+        and not length
+    ):
+        from fastapi.responses import JSONResponse
+
+        return JSONResponse(
+            {"detail": "Content-Length required for evidence uploads"}, status_code=411
+        )
+    if length and (not length.isdigit() or int(length) > 6 * 1024 * 1024):
+        from fastapi.responses import JSONResponse
+
+        return JSONResponse({"detail": "Request body too large"}, status_code=413)
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=()"
+    if (
+        "/auth/" in request.url.path
+        or "/admin/" in request.url.path
+        or "/government/" in request.url.path
+        or "/reports" in request.url.path
+    ):
+        response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 def get_region(region_id: str) -> dict:
@@ -35,6 +79,35 @@ def get_region(region_id: str) -> dict:
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "himalayan-sentinel"}
+
+
+@app.get("/health/database")
+def database_health():
+    from sqlalchemy import text
+
+    from . import db
+
+    with db.transaction() as conn:
+        conn.execute(text("SELECT 1"))
+    return {"status": "ok", "database": db.engine.dialect.name}
+
+
+@app.get("/health/providers")
+def providers_health():
+    from . import db
+
+    with db.transaction() as conn:
+        return {
+            "providers": [
+                {
+                    "id": r["id"],
+                    "mode": r["state"].get("mode"),
+                    "health": r["state"].get("health"),
+                    "enabled": r["enabled"],
+                }
+                for r in db.rows(conn, db.sources)
+            ]
+        }
 
 
 @app.get("/regions")
@@ -64,33 +137,21 @@ def calculate(factors: RiskFactors):
 @app.get("/weather/{region_id}")
 async def weather(region_id: str):
     selected = get_region(region_id)
-    async with httpx.AsyncClient(timeout=8) as client:
-        response = await client.get(
-            "https://api.open-meteo.com/v1/forecast",
-            params={
-                "latitude": selected["lat"],
-                "longitude": selected["lng"],
-                "daily": "precipitation_sum",
-                "forecast_days": 7,
-                "timezone": "Asia/Kathmandu",
-            },
-        )
-        response.raise_for_status()
-    return response.json()
+    from .providers import WeatherProvider
+
+    return await WeatherProvider().fetch(selected)
 
 
 @app.post("/reports", response_model=StoredReport, status_code=201)
 def submit_report(report: CommunityReport):
-    stored = StoredReport(
-        id=len(REPORTS) + 1, created_at=datetime.now(UTC), **report.model_dump()
-    )
-    REPORTS.append(stored)
-    return stored
+    raise HTTPException(410, "Use /api/v1/reports for verified guest submissions")
 
 
 @app.get("/reports", response_model=list[StoredReport])
 def reports():
-    return list(reversed(REPORTS))
+    raise HTTPException(
+        410, "Reports are private; use authenticated moderation endpoints"
+    )
 
 
 def plain_explanation(selected: dict, language: str) -> str:
@@ -108,6 +169,7 @@ async def explain_risk(request: AIRequest):
         "language": request.language,
         "explanation": plain_explanation(selected, request.language),
         "source": "deterministic-fallback",
+        "mode": "simulated",
         "disclaimer": DISCLAIMER,
     }
 

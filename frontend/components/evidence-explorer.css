@@ -1,0 +1,42 @@
+.evidence-explorer { margin: 32px 0; min-width: 0; scroll-margin-top: 90px; }
+.evidence-explorer h2 { margin: 8px 0; font-size: 28px; }
+.evidence-explorer h3 { margin: 0 0 10px; font-size: 17px; }
+.evidence-heading p { max-width: 750px; line-height: 1.6; color: var(--muted); }
+.evidence-sources { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,250px),1fr)); gap: 12px; margin: 20px 0 12px; }
+.evidence-panel { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; overflow-wrap: anywhere; }
+.evidence-panel p { line-height: 1.55; }
+.evidence-note { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.evidence-district { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-weight: bold; margin: 24px 0 16px; }
+.evidence-explorer select, .evidence-explorer input:not([type=checkbox]) { width: 100%; min-width: 0; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 7px; padding: 10px; font: inherit; }
+.evidence-district select { max-width: 320px; }
+.evidence-context-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; }
+.evidence-mode { text-transform: capitalize; }
+.evidence-warning { border-left: 3px solid #b97623; padding-left: 12px; font-size: 13px; }
+.evidence-number { font-size: 27px; font-weight: bold; }
+.context-metadata { display: grid; grid-template-columns: minmax(90px, .4fr) minmax(0, 1fr); gap: 8px 14px; font-size: 13px; line-height: 1.5; }
+.context-metadata dt { font-weight: bold; }
+.context-metadata dd { margin: 0; overflow-wrap: anywhere; }
+.context-metadata > div { display: contents; }
+.evidence-explorer a { color: #087768; text-decoration: underline; }
+.evidence-table-scroll { max-width: 100%; overflow-x: auto; }
+.evidence-explorer table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+.evidence-explorer caption { text-align: left; padding: 12px 0; font-weight: bold; }
+.evidence-explorer th, .evidence-explorer td { padding: 9px 7px; border-bottom: 1px solid var(--line); }
+.evidence-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 16px; }
+.evidence-explorer button { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; font: inherit; }
+.evidence-explorer button[aria-pressed=true], .evidence-filters button { background: #e5f5ef; border-color: #148f7a; color: #115c4f; }
+.evidence-explorer button:disabled { opacity: .5; cursor: default; }
+.evidence-explorer :is(button,input,select,summary):focus-visible { outline: 3px solid #148f7a; outline-offset: 3px; }
+.evidence-filters { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; align-items: end; }
+.evidence-filters label { display: grid; gap: 6px; font-size: 13px; }
+.evidence-filters .evidence-checkbox { display: flex; align-items: center; gap: 8px; grid-column: span 2; }
+.evidence-checkbox input { width: 17px; height: 17px; flex-shrink: 0; }
+.evidence-page-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 18px 0 12px; font-size: 14px; }
+.evidence-page-controls > div { display: flex; gap: 8px; }
+.context-map { width: 100%; height: 320px; border: 1px solid var(--line); border-radius: 12px; z-index: 0; }
+.evidence-records { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; max-height: 420px; overflow-y: auto; margin: 14px 0; }
+.evidence-records button { display: grid; gap: 5px; width: 100%; height: 100%; text-align: left; overflow-wrap: anywhere; }
+.evidence-records span, .evidence-records small { color: var(--muted); font-size: 12px; }
+.evidence-detail { margin-top: 16px; }
+.evidence-detail summary { cursor: pointer; padding: 12px 0; }
+@media (max-width: 720px) { .evidence-context-grid, .evidence-filters, .evidence-records { grid-template-columns: minmax(0,1fr); } .evidence-filters .evidence-checkbox { grid-column: auto; } .evidence-panel { padding: 15px; } .evidence-explorer h2 { font-size: 24px; } .context-map { height: 260px; } .evidence-page-controls button { padding: 9px; font-size: 13px; } }
