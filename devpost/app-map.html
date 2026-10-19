@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Himalayan Sentinel — application map</title>
+<style>
+:root{color-scheme:light;font:16px/1.65 system-ui,sans-serif;color:#183037;background:#f4f8f6}*{box-sizing:border-box}body{max-width:1050px;margin:auto;padding:32px 22px 60px}h1,h2,h3{line-height:1.2}h1{font-size:clamp(28px,5vw,44px)}h2{margin-top:36px}p{max-width:80ch}.eyebrow{color:#087768;font-weight:700;letter-spacing:.06em}.route{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;list-style:none;padding:0}.route li,.card,details{background:white;border:1px solid #d1e1da;border-radius:12px;padding:20px}.route strong{display:block;color:#087768}.route code{display:block;margin:12px 0}code{overflow-wrap:anywhere;font-size:.88em;background:#eaf3ef;padding:3px 6px;border-radius:4px}pre{overflow:auto;background:#173c36;color:#f4faf6;padding:18px;border-radius:10px}pre code{background:none;color:inherit;padding:0}details{margin:12px 0}summary{cursor:pointer;font-weight:650}summary:focus-visible,a:focus-visible{outline:3px solid #148f7a;outline-offset:5px}a{color:#087768}.note{font-size:.9em;color:#596d70}svg{max-width:100%;height:auto}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:650px){.route,.grid{grid-template-columns:1fr}body{padding:24px 16px}}
+</style>
+<body>
+<p class="eyebrow">HIMALAYAN SENTINEL · CODE REFERENCE</p>
+<h1>From a source record<br>to evidence someone can inspect.</h1>
+<p>This offline guide follows the implemented data integrations. Static lake inventories and historical events provide context; current weather is a forecast. A person still reviews and approves each demonstration notice.</p>
+<p class="note">Source snapshot: implementation commit <code>acd354d</code>, 19 October 2026. Paths and symbols reference the finished code. This is a reference route, not a claim that a learner completed a hands-on tour. Code can change after this snapshot.</p>
+<svg viewBox="0 0 900 170" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">Evidence data flow</title><desc id="diagram-desc">Original local files flow through the importer into processed context, then through the API to the evidence explorer. Open-Meteo separately supplies cached forecasts. Staff review leads to a demo notice.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#148f7a"/></marker></defs>
+<g fill="#fff" stroke="#bbd8ce" stroke-width="2"><rect x="5" y="55" width="155" height="65" rx="10"/><rect x="200" y="55" width="170" height="65" rx="10"/><rect x="410" y="55" width="170" height="65" rx="10"/><rect x="620" y="55" width="130" height="65" rx="10"/><rect x="790" y="55" width="105" height="65" rx="10"/></g>
+<g stroke="#148f7a" stroke-width="2" marker-end="url(#arrow)"><path d="M160 88h38"/><path d="M370 88h38"/><path d="M580 88h38"/><path d="M750 88h38"/></g>
+<g font-family="system-ui,sans-serif" font-size="15" text-anchor="middle" fill="#183037"><text x="82" y="82">Original files</text><text x="82" y="104">read only</text><text x="285" y="82">Importer / cache</text><text x="285" y="104">verified metadata</text><text x="495" y="82">Context API</text><text x="495" y="104">bounded results</text><text x="685" y="82">Explorer</text><text x="685" y="104">source + time</text><text x="842" y="82">Human</text><text x="842" y="104">review</text><text x="495" y="150">Open-Meteo → stored forecast → district panel</text></g>
+</svg>
+<h2>Follow one action: inspect district evidence</h2>
+<ol class="route">
+<li><strong>1 · Prepare real source records</strong><code>backend/app/context_data.py<br>import_context · ContextStore.population</code><p>The importer chooses the latest historical revision and preserves original IDs. Population masks select valid pixel centres within a district, without labelling the result as exposure.</p></li>
+<li><strong>2 · Request a bounded view</strong><code>backend/app/context_api.py<br>lakes · events · population</code><p>The API filters the prepared records and returns a page with its total. Missing files and absent values remain explicit. The public API does not expose private citizen evidence.</p></li>
+<li><strong>3 · Inspect the result</strong><code>frontend/components/evidence-explorer.tsx<br>EvidenceExplorer · useContextResource</code><p>The browser displays the map, searchable list, retained attributes and source dates. Obsolete responses cannot overwrite the newly selected district's panels.</p></li>
+</ol>
+<h2>How a live forecast stays traceable</h2>
+<div class="card"><p><code>backend/app/district_weather.py → district_weather</code> locates a district and requests its forecast. <code>backend/app/providers.py → WeatherProvider.fetch</code> coordinates concurrent requests and checks the persisted cache. The <code>weather_observations</code> table retains successful values and retrieval time.</p><p>A disabled provider cannot reuse a fresh live cache. A failed refresh returns a labelled stale cache or simulated fixture. <code>backend/app/jobs.py → sync_weather</code> selects today's Nepal date rather than blindly using the first cached day.</p></div>
+<h2>To change this, start here</h2>
+<div class="grid">
+<details><summary>Search fields or result paging</summary><p>Change <code>ContextStore.query</code> in <code>context_data.py</code> and the filters in <code>evidence-explorer.tsx</code>. Keep API bounds, filter totals and displayed records consistent. Verify with <code>backend/tests/test_context_data.py</code> and <code>frontend/tests/evidence.spec.ts</code>.</p></details>
+<details><summary>Source labels and visible layout</summary><p>Source metadata comes from <code>ContextStore.catalog</code>. Record cards and forecast/population panels are in <code>evidence-explorer.tsx</code>; layout is in <code>evidence-explorer.css</code>. A harmless label edit is an optional practice; refresh the browser and check mobile layout.</p></details>
+<details><summary>Forecast freshness or failure behavior</summary><p>Start at <code>WeatherProvider._fetch</code>. Keep retrieval time, forecast date and simulated/cached/live modes distinct. <code>backend/tests/test_live_weather.py</code> covers cache disabling, concurrency, malformed data and Nepal midnight.</p></details>
+<details><summary>Notice permissions and review</summary><p>Start at <code>backend/app/workflow.py → transition_alert</code> and <code>frontend/components/operations.tsx</code>. Keep jurisdiction checks, approval invalidation and version history on the server. Geographic context never establishes that a lake caused a report.</p></details>
+</div>
+<h2>A practice to reuse</h2>
+<p>Specify what evidence would prove a source works before connecting its label to a screen. Here, <code>devpost/prd.md → Current Weather</code> requires a genuine successful fetch and visible timestamps; <code>test_live_weather.py</code> proves a cache cannot silently switch source modes. The live verification command separately checks the actual external service. A mock test and a successful external request answer different questions.</p>
+<h2>Run it again</h2>
+<p>From the repository root, after installing the documented dependencies:</p>
+<pre><code>./scripts/dev.ps1</code></pre>
+<p>Open <a href="http://localhost:3000/evidence?district=rasuwa">the Rasuwa evidence explorer</a>. The helper prepares local context, starts the API and weather worker, and runs the frontend. Private configuration stays in the ignored root <code>.env</code>. Detailed alternatives are in <code>README.md</code>.</p>
+<p class="note">No network is required to read this guide. Opening the running application or external map tiles requires their normal services. Submission video, public repository access and the final entry remain separate tasks.</p>
+</body></html>
