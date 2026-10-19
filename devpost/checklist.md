@@ -29,7 +29,7 @@ Build mode: fast, selected under the learner's explicit request to complete the 
   Learner check: Select a district, inspect forecast source/mode/time, then review a staged report and demo notice.
   Commit: `Connect current forecasts to the evidence review journey`
 
-- [ ] **3. Reproduce and demonstrate the finished integration**
+- [x] **3. Reproduce and demonstrate the finished integration**
   Becomes usable: Documented startup, verified demo flow, factual source catalog and navigable app map.
   Why now: Technical completion must be reproducible and limitations must match the actual implementation.
   PRD ref: `prd.md > Verification and Open Questions`
@@ -80,10 +80,10 @@ Activity mode: reference guide prepared during autonomous work; hands-on activit
 - Actual application browser check: `/evidence?district=Rasuwa` on the learner's existing development server displayed the real catalog, modelled population and live/cached current forecast; zero page errors. Screenshot retained locally under ignored `frontend/test-results/live-evidence.png`.
 - App map: browser opened the standalone local HTML, screenshot visually reviewed, no external assets required. `frontend/test-results/app-map.png` is an ignored local artifact.
 - Startup helper: PowerShell parser reports no syntax errors. Existing API/frontend processes were preserved; the running API reloads the new code.
+- Documentation and demonstration checkpoint: `4b6d04f`; implementation checkpoint: `acd354d`.
 
 ## Remaining learner and shipping work
 
 The implementation and verification tasks are complete. The unchecked hands-on/learning boxes above require actual learner participation; automatic checks do not replace them. The learner can open `/evidence?district=rasuwa`, try the searches and reviewed-notice journey, and report any confusing or broken behavior. A short reference route is available in `app-map.html`; a harmless label edit or reflection is optional.
 
 Public repository visibility/current remote content remain unverified. The configured origin exists locally, but an unauthenticated browser fetch was inconclusive. No push, visibility change, video upload, public deployment or Devpost submission was performed. Actual video URL, learner-authored form fields and submission confirmation remain entrant actions. `docs/demo-checklist.md` records the technical demonstration sequence and required artifacts.
-
