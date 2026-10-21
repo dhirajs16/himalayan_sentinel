@@ -58,15 +58,20 @@ staged boundary hashes match the manifest. A staged whitespace check also passes
 
 An unauthenticated GitHub API request for
 `https://github.com/dhirajs16/himalayan_sentinel` returned **404** on 21 October.
-That does not establish public access or distinguish a private repository from
-other unavailable states. The remote's earlier `15e1e1d` content check is a prior
-19 October observation, not a fresh authenticated remote comparison.
+That does not establish public access. A later authorized push on 21 October
+advanced remote `main` from `15e1e1d` to reviewed commit
+`1ad4ee09ca22e0f69a996f82acea9db6190d77a8`; authenticated `ls-remote` verifies both
+HEAD and main at that exact commit. Signed-out repository API, commit API and
+GitHub webpage requests all still return 404 after the push.
 
 After explicit authorization to push or change visibility, check the intended
 branch and its diff, publish the reviewed commit, then verify that exact commit
 and required files without authentication. Publishing exposes committed code,
-assets and included history. No push, visibility change, deployment, message to an
-organizer or Devpost submission was performed in this preparation session.
+assets and included history. The user explicitly authorized the push of `1ad4ee0`
+only; the normal non-force push succeeded. No visibility change, deployment,
+message to an organizer or Devpost submission was performed. Later documentation
+edits remain local, outside that authorized push. The user reconfirmed video work
+is for later; no recorder was run.
 
 ## Remaining learner/submission work
 

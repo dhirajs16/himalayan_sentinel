@@ -6,8 +6,8 @@ Video work is explicitly deferred. This entry is not confirmed submission-ready.
 |---|---|---|
 | 1. Hands-on review and learning | Partial; learner response needed | Earlier screenshot establishes evidence-page access. District/search interaction, the complete report-to-resolution journey, learning wrap-up and readiness sign-off remain unconfirmed. A WorldPop -> API -> population-panel walkthrough is recommended; no experience or reflection is invented. |
 | 2. Dataset rights and integrity | Runtime boundary issue resolved | Pinned Open Knowledge Nepal CC BY 4.0 bundle with attribution/license and unchanged upstream bytes. All 33 original raw-data hashes and both bundled boundary hashes match. Original unverified boundaries remain excluded and unused. See `../docs/data-catalog.md`. |
-| 3. Repository handoff | Local preparation; publication requires authorization | Origin: `https://github.com/dhirajs16/himalayan_sentinel.git`. Unauthenticated GitHub API returned 404 on 21 October; public access is unverified. No push or visibility change performed. See `../docs/repository-handoff.md` for included/excluded files and audit scope. |
-| 4. Demo video | Deferred by entrant | No recorder run or upload. Handoff-mentioned footage is now missing and may have been removed by default test-output cleanup; no other copy was found in checked artifact folders. Routine output is now separate (`test-results/e2e`). No replacement recording; see `../docs/demo-checklist.md`. |
+| 3. Repository handoff | Reviewed commit pushed; public access pending | User explicitly authorized pushing `1ad4ee0`. Normal non-force push succeeded; remote HEAD/main both verify as `1ad4ee09ca22e0f69a996f82acea9db6190d77a8`. Signed-out repository API, commit API and GitHub page still return 404. No visibility change authorized or performed. See `../docs/repository-handoff.md`. |
+| 4. Demo video | Deferred; entrant reconfirmed "later" | No recorder run or upload. Handoff-mentioned footage is now missing and may have been removed by default test-output cleanup; no other copy was found in checked artifact folders. Routine output is now separate (`test-results/e2e`). No replacement recording; see `../docs/demo-checklist.md`. |
 | 5. Devpost fields | Public requirements rechecked; actual form unavailable | Public update confirms repository in Try it out, Skill Pack usage explanation and age-of-majority checkbox. Exact live form and exit-survey fields remain unverified. Entrant writes final answers; legacy assistant draft stays local and ignored. Nothing submitted. |
 | 6. Skill Pack timing | Adverse public guidance found; no project-specific exception | Manager says use the pack from the beginning. Recorded initial prototype predates pack installation. The later combined-commit permission in that thread addresses a different participant/question. No organizer message sent. See `../docs/organizer-clarification.md`. |
 
@@ -27,6 +27,17 @@ Reviewed four reachable local commits, 176 distinct historical blobs and 118 his
 
 ## External checks and remaining decisions
 
-The current overview and organizer update still display **26 October 2026, 17:00 EDT = 27 October 2026, 02:45 Nepal time**. The full rules returned HTTP 403; their complete current text was not reverified. Source links and confirmed public form requirements are in `../docs/hackathon-compliance.md`.
+The current overview, organizer update and official rules confirm **26 October 2026, 17:00 EDT = 27 October 2026, 02:45 Nepal time**. The full rules initially returned HTTP 403, but were accessible during the later readiness recheck. Sections 1, 3, 4 and 11 were read. Source links and confirmed public form requirements are in `../docs/hackathon-compliance.md`; the authenticated form remains unchecked.
 
-Required actions remain: actual learner review/wrap-up/sign-off; a project-specific eligibility decision if pursuing this entry despite public timing guidance; explicit authorization before publishing code/history; signed-out verification of the published commit; entrant-written answers and exit survey in the actual form; eventual reviewed public video link; and explicit authorization before submission. No final submission, eligibility approval or personal confirmation is inferred.
+Readiness follow-up: the user authorized pushing exactly `1ad4ee0` and said video
+should wait until later. Existing Git authentication pushed that commit from the
+previous remote `15e1e1d` and verified remote HEAD/main at
+`1ad4ee09ca22e0f69a996f82acea9db6190d77a8`. Unauthenticated repository API, commit
+API and GitHub page all still return 404. Separate authorization to change
+visibility has been requested; no answer or visibility change is inferred.
+Later documentation edits remain local and were not included in that push.
+A revised, unsent organizer follow-up acknowledging the public timing reply is in
+`../docs/organizer-clarification.md`. No Devpost integration was found in plugin
+discovery; signed-in form review and personal answers still need the entrant.
+
+Required actions remain: actual learner review/wrap-up/sign-off; a project-specific eligibility decision if pursuing this entry despite public timing guidance; separate authorization before changing repository visibility; signed-out verification of the published commit; entrant-written answers and exit survey in the actual form; eventual reviewed public video link; and explicit authorization before submission. No final submission, eligibility approval or personal confirmation is inferred.
