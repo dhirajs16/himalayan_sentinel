@@ -1,9 +1,11 @@
 # Build With AI: Basics compliance
 
-Rechecked 21 October 2026: the public overview, submission-form update and manager's
-timing reply are accessible. The full rules page returned HTTP 403, so its earlier
-19 October findings below are retained as prior verification, not a fresh reading.
-Recheck the full rules and authenticated form before submitting.
+Rechecked 21 October 2026: the public overview, submission-form update, manager's
+timing reply and full official rules are accessible. An earlier check today
+returned HTTP 403; the later readiness recheck successfully read the rules.
+Sections 1, 3, 4 and 11 confirm the deadline, personal eligibility, new-project,
+repository/video and written-clarification requirements below. The authenticated
+submission form still needs checking before submission.
 
 | Item | Verified requirement / status |
 |---|---|

@@ -107,3 +107,5 @@ Remote main was verified at `15e1e1d` on 19 October, confirming the earlier comm
 - The learner requested guidance about experience questions. A WorldPop validation -> district aggregation -> context API -> population panel reference route was recommended. No personal observations, completed hands-on review or learning reflection were supplied, so learner completion boxes remain open.
 
 - Separated routine Playwright output (`test-results/e2e`) from deferred captures (`test-results/demo`). The handoff-mentioned video is missing and may have been removed by the prior default cleanup; no other copy was found in checked artifact folders. No replacement recording was made. Video work remains deferred.
+
+- With explicit user authorization, pushed reviewed commit `1ad4ee0` to `origin/main` using a normal non-force push. Remote HEAD/main both verify as `1ad4ee09ca22e0f69a996f82acea9db6190d77a8`. Signed-out repository/commit API and GitHub page checks still return 404; no visibility change is authorized or performed. Later documentation edits remain local. The user reconfirmed video should wait until later.

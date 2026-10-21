@@ -27,8 +27,9 @@ a new project built during the submission period using the Devpost Learn Skill
 Pack. Section 11 calls for a written clarification when a rule is ambiguous.
 The public clarification above supplies the manager's interpretation of late
 adoption. A project-specific exception has not been obtained. The full rules
-returned HTTP 403 during the 21 October recheck, so their complete current text
-was not reverified; the earlier section references are retained as prior findings.
+returned HTTP 403 on the first 21 October check, but were accessible during a
+later readiness recheck. Sections 4 and 11 still require a new project using the
+pack and a written request when a rule is considered ambiguous.
 
 Contact route: the **Email the hackathon manager** link near the bottom of the
 [event overview](https://learn-ai-basics.devpost.com/). Its address is protected
@@ -53,6 +54,33 @@ must the submitted project have used it from its initial planning stage? Is ther
 specific evidence or disclosure you require to evaluate this case?
 
 Thank you.
+
+## Updated follow-up for review (21 October; unsent)
+
+Subject: Himalayan Sentinel - project-specific Skill Pack eligibility clarification
+
+Hello,
+
+I read Joe Holmes' public reply that the Skill Pack should be used from the
+beginning of the project. I would like to confirm how that guidance applies to
+Himalayan Sentinel before submitting it.
+
+An initial working prototype existed before I installed the Devpost Learn Skill
+Pack. I later used the installed pack to plan further geographic-data and weather
+integration, document scope/requirements/specification, and structure verification
+and submission preparation. I am not claiming that the pack guided the original
+prototype from the beginning, and I will disclose the actual chronology.
+
+Does this project qualify with that disclosed chronology, or does your guidance
+mean that a separate new implementation must start from an empty folder with the
+Skill Pack used throughout? Please let me know if you need particular repository
+evidence to make a project-specific decision.
+
+Thank you.
+
+This follow-up acknowledges the public answer; it is not a claim that an exception
+exists. Confirm the chronology and authorize sending before using it. No message
+has been sent.
 
 ## Response record
 
