@@ -1,0 +1,33 @@
+{
+  "publisher": "Open Knowledge Nepal",
+  "dataset": "LocalBoundaries",
+  "source": "https://localboundries.oknp.org/",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_evidence": [
+    "https://localboundries.oknp.org/about/",
+    "https://github.com/openknowledgenp/localboundaries/blob/54f496a289670ab4fd781d8191c12a0f4cad7c15/README.md"
+  ],
+  "repository": "https://github.com/openknowledgenp/localboundaries",
+  "revision": "54f496a289670ab4fd781d8191c12a0f4cad7c15",
+  "committed_at": "2026-07-04T16:28:53Z",
+  "retrieved_on": "2026-10-19",
+  "changes": "None: upstream GeoJSON bytes preserved. Filenames changed only.",
+  "crs": "EPSG:4326",
+  "survey_date": null,
+  "district_derivation": "Dissolved by upstream publisher from local-level polygons.",
+  "files": [
+    {
+      "file": "districts.json",
+      "sha256": "2c77e563c9df54270744f2e2b19a69f91dc5ca0ce7800025c0323d8b01c00c2f",
+      "features": 77,
+      "upstream_path": "public/data/district/nepal.geojson"
+    },
+    {
+      "file": "provinces.json",
+      "sha256": "46d150cc6be4c1df295646a90f7f052afb87d94c9870bf5b99addf297679ab7a",
+      "features": 7,
+      "upstream_path": "public/data/province/nepal.geojson"
+    }
+  ]
+}

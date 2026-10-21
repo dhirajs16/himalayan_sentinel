@@ -57,7 +57,7 @@ Build mode: fast, selected under the learner's explicit request to complete the 
 Activity and evidence: implementation checkpoint `acd354d`; 44 backend tests pass against isolated SQLite and PostgreSQL/PostGIS, 9 browser tests pass, Python typing and lint/format checks pass. The production Next.js build passes with all five application/not-found routes. The actual running API and a separate real-browser check display prepared context, verified district population and current forecasts with zero browser runtime errors. The offline map was opened in Chrome and visually checked. It is a reference, not a completed learner activity.
 Route and stops: importer → context API → evidence explorer; weather provider → stored observation → forecast panel.
 Edit outcome: not performed by learner.
-Reflection: not yet offered.
+Reflection: offered; learner's own response not yet recorded.
 Activity mode: reference guide prepared during autonomous work; hands-on activity pending.
 
 ## Revisions
@@ -71,7 +71,7 @@ Activity mode: reference guide prepared during autonomous work; hands-on activit
 ## Verification record
 
 - Broader inventory: 3,624 records; latest historical revision: 766 events; district boundaries: 77; dangerous-lake inventory remains separate at 47.
-- WorldPop district sums: Rasuwa 46,485.04 modelled people across 19,722 valid cells; Gorkha 249,877.77 across 96,812 valid cells. These are geographic context, not exposure estimates.
+- WorldPop district sums: Rasuwa 46,137.78 modelled people across 19,614 valid cells; Gorkha 248,736.68 across 96,431 valid cells, using the licensed Open Knowledge Nepal replacement. These are geographic context, not exposure estimates.
 - Original source integrity: 33 file hashes checked against the existing audit; zero changes.
 - Actual lake weather refresh: 47 locations, modes `[live]`, status `ok`; forecasts persist in the configured PostgreSQL database.
 - Browser suite: 9 passed, including the existing publication/resolution journey and new filtering, pagination, source labels, district links, obsolete-response handling and mobile context.
@@ -86,4 +86,24 @@ Activity mode: reference guide prepared during autonomous work; hands-on activit
 
 The implementation and verification tasks are complete. The unchecked hands-on/learning boxes above require actual learner participation; automatic checks do not replace them. The learner can open `/evidence?district=rasuwa`, try the searches and reviewed-notice journey, and report any confusing or broken behavior. A short reference route is available in `app-map.html`; a harmless label edit or reflection is optional.
 
-Public repository visibility/current remote content remain unverified. The configured origin exists locally, but an unauthenticated browser fetch was inconclusive. No push, visibility change, video upload, public deployment or Devpost submission was performed. Actual video URL, learner-authored form fields and submission confirmation remain entrant actions. `docs/demo-checklist.md` records the technical demonstration sequence and required artifacts.
+Remote main was verified at `15e1e1d` on 19 October, confirming the earlier commits were pushed. An unauthenticated GitHub API request returned 404; public access remains unverified. New submission preparation changes are tracked in `submission-status.md`. No visibility change, video upload, public deployment or Devpost submission is claimed. `docs/demo-checklist.md` records the technical demonstration sequence and local capture mechanics.
+
+## Submission preparation follow-up
+
+- The learner supplied a screenshot of `/evidence` and confirmed that image was their review response. It visibly establishes page access and populated source/forecast/population/map panels. No successful district/search interaction or full hands-on report-to-resolution review was reported, so those checkboxes remain open.
+- The learning-reflection prompt was offered. A legacy assistant-written `submission-draft.md` is preserved locally and ignored; it is not approved final copy. The workbook now asks for entrant-written answers. No mastery or completed learning activity is inferred.
+- Replaced runtime administrative geometry with a pinned Open Knowledge Nepal CC BY 4.0 bundle. All 77 district and seven province geometries are valid; all 84 PostGIS administrative properties match the bundle. Raw boundaries remain untouched and unused. Map/evidence/population credit the new source. Data attributes prevent Git newline conversion from changing pinned GeoJSON hashes.
+- Verification after the replacement: 45 SQLite backend tests, ten PostgreSQL/PostGIS context/boundary tests, Python typing across 21 modules, lint/format, frontend typing and production build pass. All 33 original source hashes still match. The earlier full PostgreSQL and nine-test browser suite remain recorded above.
+- Prepared a separate recorder for the complete staged workflow, a submission workbook/draft, an organizer inquiry and the six-task status tracker. External actions remain separate from local artifact preparation.
+
+## Preparation resumed - 21 October 2026
+
+- Video recording, editing and upload remain explicitly deferred; the recorder was not run.
+- Fixed default pytest discovery to stay within `tests/` after ignored runtime-directory access caused collection errors. Fresh full suites pass: 45 SQLite tests and 45 PostgreSQL/PostGIS tests, with isolated storage/schemas. Ruff lint/format and mypy (21 source files) pass.
+- Production build and standalone TypeScript checks pass. The first overlapping build/browser attempt timed out during frontend startup; only its verified isolated test services were stopped. A sequential retry passes all nine browser tests and exits zero after scoped Windows service cleanup. The generated Next.js reference was restored and standalone typing passes afterward.
+- Rechecked real prepared counts and Rasuwa/Gorkha population results; all 33 original hashes and both boundary hashes still match. Actual Rasuwa forecast refresh returned live/fresh on 21 October at 12:51 Nepal time after an authorized network-enabled retry.
+- Reviewed four reachable local commits and the publication index. All 131 indexed files pass the scoped private-credential/token/path scan; staged boundary hashes match. Private environments/profile/data/evidence and the legacy assistant draft stay excluded; unrelated editor settings are not staged. See `../docs/repository-handoff.md` for scope and limitations.
+- Found the manager's public instruction to use the Skill Pack from the beginning. The later combined-commit permission in the same thread concerns another participant. No project-specific exception or sent inquiry is confirmed; see `../docs/organizer-clarification.md`.
+- The learner requested guidance about experience questions. A WorldPop validation -> district aggregation -> context API -> population panel reference route was recommended. No personal observations, completed hands-on review or learning reflection were supplied, so learner completion boxes remain open.
+
+- Separated routine Playwright output (`test-results/e2e`) from deferred captures (`test-results/demo`). The handoff-mentioned video is missing and may have been removed by the prior default cleanup; no other copy was found in checked artifact folders. No replacement recording was made. Video work remains deferred.

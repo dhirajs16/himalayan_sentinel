@@ -24,3 +24,5 @@ frontend/.next-test/
 frontend/test-results/
 frontend/playwright-report/
 /devpost/learner-profile.md
+# Legacy assistant-written preparation stays local; final answers are entrant-written.
+/devpost/submission-draft.md

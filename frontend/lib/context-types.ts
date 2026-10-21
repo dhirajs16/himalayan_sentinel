@@ -11,7 +11,7 @@ export type ContextCatalog = {
 };
 export type PopulationContext = {
   status: string; district: string; population: number | null; year: number | null; units: string;
-  attribution: string; source: string; method: string; valid_cells: number | null; limitations: string;
+  attribution: string; boundary_attribution?: string; source: string; method: string; valid_cells: number | null; limitations: string;
 };
 export type ContextWeather = {
   provider: string; mode: string; freshness: string; attribution: string; error?: string | null;

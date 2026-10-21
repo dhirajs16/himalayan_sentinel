@@ -1,6 +1,6 @@
 # Data catalog
 
-The existing root `data/` is the read-only raw-data location. It is intentionally not moved or overwritten. `backend/data/processed/` holds ignored, reproducible derivatives and the complete machine-readable audit; `backend/app/data/regions.json` remains the original regional demonstration fixture. No additional dataset was downloaded during implementation. Python/npm packages are development dependencies, not hazard datasets.
+The existing root `data/` is the read-only raw-data location. It is intentionally not moved or overwritten. `backend/data/processed/` holds ignored, reproducible derivatives and the complete machine-readable audit; `backend/app/data/regions.json` remains the original regional demonstration fixture. For submission preparation, a verified CC BY 4.0 boundary replacement was downloaded into `backend/assets/boundaries/`; the original raw data remains unchanged. Python/npm packages are development dependencies, not hazard datasets.
 
 `scripts/inspect_datasets.py` recursively reads every original file, hashes bytes, opens each logical shapefile, GeoJSON, CSV, GeoTIFF, metadata XML and PDF. Binary `.dbf/.shx/.sbn/.sbx` sidecars are interpreted with their parent shape inventory or retained as index sidecars. The file-by-file size, record count, CRS and invalid-geometry summary is generated in [data-audit.md](data-audit.md); exact columns, source DBF types, missing counts, duplicates, errors, source metadata text and SHA-256 hashes are in `backend/data/processed/data-quality.json`. Run it again to reproduce. An error is recorded rather than hidden if a file cannot be opened.
 
@@ -36,7 +36,13 @@ Supplied metadata explicitly states **CC BY 4.0**. Attribution: ICIMOD. (2023). 
 
 ## Administrative boundaries
 
-`data/GeoJson/provinces.json`: seven features; `districts.json`: 77. Valid, nonempty polygons; property schemas, nulls and duplicate counts are recorded in the audit. District attributes include DISTRICT, Province, OBJECTID and shape summary fields. Province features contain additional demographic/economic fields with unverified provenance/definitions; those attributes are not used as current exposure measurements. Boundary currency/date, original licence and provenance are **verification required**. ICIMOD NepalAdmin service URLs supplied in the brief are a provenance lead, not proof the local files came from that service. Coordinates follow GeoJSON longitude/latitude convention; audit records any declared CRS. Used for local map context, not to certify emergency jurisdiction boundaries. Do not republish raw boundaries until terms are confirmed.
+Runtime district/province boundaries now come from **Open Knowledge Nepal, LocalBoundaries**, [CC BY 4.0](https://localboundries.oknp.org/about/), pinned to repository revision `54f496a289670ab4fd781d8191c12a0f4cad7c15` (4 July 2026). The bundled `backend/assets/boundaries/` includes unchanged upstream GeoJSON bytes, source paths, SHA-256 hashes, attribution and a data license notice. The publisher's README explicitly licenses datasets CC BY 4.0; its separate software MIT license is not used as the data license. Coverage: 77 districts and seven provinces, EPSG:4326; all geometries valid. Districts are dissolved by the publisher from local-level boundaries; survey date unspecified. These are geographic context, not certified emergency jurisdictions.
+
+Attribution: Administrative boundaries: Open Knowledge Nepal, LocalBoundaries, CC BY 4.0, https://localboundries.oknp.org/.
+
+Public boundary routes, PostGIS administrative imports, district filtering, weather representative points and WorldPop district summaries use the bundled replacement. Map attribution and the evidence catalog credit the publisher. Population caches include boundary fingerprints. With this source, Rasuwa is 46,137.78 modelled people over 19,614 valid cells and Gorkha is 248,736.68 over 96,431 cells; differences from earlier checks reflect different district polygons, not changed raster bytes.
+
+The original ignored `data/GeoJson/provinces.json` (seven) and `districts.json` (77) have unresolved origin/licensing, remain read-only and are no longer used or publicly served. Their historical audit remains for integrity evidence. Do not redistribute those original files.
 
 ## Population raster
 

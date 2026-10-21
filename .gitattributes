@@ -1,0 +1,3 @@
+# Preserve pinned dataset bytes and SHA-256 values on every platform.
+backend/assets/boundaries/districts.json -text
+backend/assets/boundaries/provinces.json -text

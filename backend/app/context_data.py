@@ -29,6 +29,13 @@ from shapely import transform
 from shapely.geometry import Point, mapping, shape
 from shapely.strtree import STRtree
 
+from .boundaries import (
+    BOUNDARY_DIR,
+    BOUNDARY_LIMITATIONS,
+    boundary_attribution,
+    boundary_path,
+)
+
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 PROCESSED_DIR = ROOT / "backend/data/processed"
@@ -55,8 +62,7 @@ POPULATION_LIMITATIONS = (
     "WorldPop R2025A v1 is an alpha modelled estimate for 2026, not a census "
     "or real-time occupancy count. District totals use pixel centres within "
     "the supplied boundary; boundary differences, NoData and model uncertainty "
-    "affect results. This is district context, not flood exposure. Administrative "
-    "boundary provenance and redistribution rights require independent verification."
+    "affect results. This is district context, not flood exposure."
 )
 
 
@@ -345,10 +351,12 @@ def prepare_events(path, district_index):
     return records
 
 
-def import_context(data_dir=DATA_DIR, processed_dir=PROCESSED_DIR):
+def import_context(
+    data_dir=DATA_DIR, processed_dir=PROCESSED_DIR, boundary_dir=BOUNDARY_DIR
+):
     data_dir, processed_dir = Path(data_dir), Path(processed_dir)
-    boundary_path = data_dir / "GeoJson/districts.json"
-    districts = load_districts(boundary_path)
+    district_path = boundary_path("districts", boundary_dir)
+    districts = load_districts(district_path)
     district_index = DistrictIndex(districts)
     lakes = list(data_dir.rglob("GL_3basins_2015.shp"))
     if len(lakes) > 1:
@@ -400,8 +408,8 @@ def import_context(data_dir=DATA_DIR, processed_dir=PROCESSED_DIR):
         "sources": sources,
         "districts": districts,
         **records,
-        "boundary_inputs": _fingerprint([boundary_path])
-        if boundary_path.exists()
+        "boundary_inputs": _fingerprint([district_path])
+        if district_path.exists()
         else [],
         "limitations": CONTEXT_LIMITATIONS,
     }
@@ -414,8 +422,11 @@ def import_context(data_dir=DATA_DIR, processed_dir=PROCESSED_DIR):
 
 
 class ContextStore:
-    def __init__(self, data_dir=DATA_DIR, processed_dir=PROCESSED_DIR):
+    def __init__(
+        self, data_dir=DATA_DIR, processed_dir=PROCESSED_DIR, boundary_dir=BOUNDARY_DIR
+    ):
         self.data_dir, self.processed_dir = Path(data_dir), Path(processed_dir)
+        self.boundary_dir = Path(boundary_dir)
         self._lock = RLock()
         self._document = None
         self._signature = None
@@ -440,7 +451,7 @@ class ContextStore:
             return self._document
 
     def districts(self):
-        path = self.data_dir / "GeoJson/districts.json"
+        path = boundary_path("districts", self.boundary_dir)
         signature = tuple(_stamp(path).values()) if path.exists() else None
         with self._lock:
             if signature != self._district_signature or self._districts is None:
@@ -459,6 +470,7 @@ class ContextStore:
 
     def catalog(self):
         document = self._load()
+        bundled = self.boundary_dir.resolve() == BOUNDARY_DIR.resolve()
         sources = [
             {key: value for key, value in item.items() if key != "inputs"}
             for item in document.get("sources", [])
@@ -479,6 +491,23 @@ class ContextStore:
                     ("events", "Historical GLOF events", EVENT_ATTRIBUTION),
                 ]
             ]
+        sources.append(
+            {
+                "id": "boundaries",
+                "name": "Nepal district boundaries (Open Knowledge Nepal)"
+                if bundled
+                else "Custom district boundaries",
+                "status": "ready" if self.districts() else "unavailable",
+                "count": len(self.districts()),
+                "source_date": "2026-07-04 repository revision; survey date unspecified"
+                if bundled
+                else None,
+                "attribution": boundary_attribution(self.boundary_dir),
+                "limitations": BOUNDARY_LIMITATIONS
+                if bundled
+                else "Custom input; verify provenance, geometry and rights independently.",
+            }
+        )
         sources.append(
             {
                 "id": "population",
@@ -563,14 +592,15 @@ class ContextStore:
             "method": "Sum nonnegative finite people-per-pixel estimates whose pixel centres fall within the district; exclude NoData. No area/density multiplier.",
             "valid_cells": 0,
             "limitations": POPULATION_LIMITATIONS,
+            "boundary_attribution": boundary_attribution(self.boundary_dir),
         }
         raster = self.data_dir / POPULATION_PRODUCT
         if not raster.exists():
             return {**result, "reason": "The local population source is unavailable."}
-        boundary_path = self.data_dir / "GeoJson/districts.json"
+        district_path = boundary_path("districts", self.boundary_dir)
         provenance = {
             "raster": self._source_fingerprint(raster),
-            "boundary": self._source_fingerprint(boundary_path),
+            "boundary": self._source_fingerprint(district_path),
             "district_geometry": hashlib.sha256(
                 json.dumps(district["geometry"], sort_keys=True).encode()
             ).hexdigest(),

@@ -58,7 +58,7 @@ function Population({ state }: { state: Remote<PopulationContext> }) {
     {population && <>
       <p className="evidence-number">{population.population != null && Number.isFinite(population.population) ? Math.round(population.population).toLocaleString("en-US") + " people" : "Population unavailable"}</p>
       <dl className="context-metadata"><dt>Status</dt><dd>{population.status}</dd><dt>Product year</dt><dd>{population.year ?? "Unknown"}</dd><dt>Covered cells</dt><dd>{population.valid_cells?.toLocaleString("en-US") ?? "Unknown"}</dd><dt>Method</dt><dd>{population.method || "Unavailable"}</dd><dt>Source</dt><dd><Value value={population.source} /></dd></dl>
-      <p className="evidence-note">{population.attribution}</p><p className="evidence-note">{population.limitations}</p>
+      <p className="evidence-note">{population.attribution}</p><p className="evidence-note">{population.boundary_attribution}</p><p className="evidence-note">{population.limitations}</p>
     </>}
     <p className="evidence-warning">Modelled district total for geographic context. This is not a count of people exposed to a flood.</p>
   </article>;

@@ -124,14 +124,14 @@ def context(tmp_path):
         for p in data.rglob("*")
         if p.is_file()
     }
-    summary = import_context(data, output)
+    summary = import_context(data, output, boundary_dir=data / "GeoJson")
     assert summary == {"lakes": 3, "events": 3, "districts": 2}
     assert original == {
         str(p): hashlib.sha256(p.read_bytes()).hexdigest()
         for p in data.rglob("*")
         if p.is_file()
     }
-    return ContextStore(data, output)
+    return ContextStore(data, output, boundary_dir=data / "GeoJson")
 
 
 def test_import_latest_revision_dates_unmapped_and_geometry(context):
@@ -211,7 +211,7 @@ def test_population_counts_masking_bounded_extent_and_cache_invalidation(tmp_pat
         [[10, 20, -99999, np.nan], [30, -1, 0, np.inf], [500, 500, 500, 500]]
     )
     write_population(data, values)
-    store = ContextStore(data, output)
+    store = ContextStore(data, output, boundary_dir=data / "GeoJson")
     result = store.population("rasuwa")
     assert result["status"] == "ready"
     assert result["population"] == 60  # count per pixel: never multiply by pixel area
@@ -236,7 +236,7 @@ def test_population_counts_masking_bounded_extent_and_cache_invalidation(tmp_pat
 def test_population_rejects_unverified_product_and_missing_data(tmp_path):
     data = tmp_path / "data"
     write_boundaries(data, [("Rasuwa", box(85, 28, 86, 29))])
-    store = ContextStore(data, tmp_path / "processed")
+    store = ContextStore(data, tmp_path / "processed", boundary_dir=data / "GeoJson")
     assert store.population("rasuwa")["status"] == "unavailable"
     write_population(data, np.ones((3, 3)), verified=False)
     result = store.population("rasuwa")
@@ -277,7 +277,11 @@ def test_context_routes_bound_queries_and_missing_states(
         monkeypatch.setattr(
             context_api,
             "store",
-            ContextStore(tmp_path / "missing", tmp_path / "unprepared"),
+            ContextStore(
+                tmp_path / "missing",
+                tmp_path / "unprepared",
+                boundary_dir=tmp_path / "missing-boundaries",
+            ),
         )
         assert client.get(prefix + "/events").json()["total"] == 0
         assert (
@@ -293,3 +297,23 @@ def test_processed_file_replacement_refreshes_query(context):
     document["events"] = []
     path.write_text(json.dumps(document), encoding="utf-8")
     assert context.query("events")["total"] == 0
+
+
+def test_public_boundaries_use_licensed_bundle_and_preserve_source(system):
+    from app.boundaries import BOUNDARY_DIR, BOUNDARY_LICENSE, boundary_path
+
+    manifest = json.loads((BOUNDARY_DIR / "manifest.json").read_text())
+    for entry in manifest["files"]:
+        kind = entry["file"].removesuffix(".json")
+        response = system.get(f"/api/v1/public/boundaries/{kind}")
+        assert response.status_code == 200
+        assert BOUNDARY_LICENSE in response.headers["link"]
+        assert hashlib.sha256(response.content).hexdigest() == entry["sha256"]
+        assert len(response.json()["features"]) == entry["features"]
+        assert boundary_path(kind).parent == BOUNDARY_DIR
+    catalog = ContextStore().catalog()
+    source = next(s for s in catalog["sources"] if s["id"] == "boundaries")
+    assert source["count"] == 77
+    assert "Open Knowledge Nepal" in source["attribution"]
+    assert "CC BY 4.0" in source["attribution"]
+    assert system.get("/api/v1/public/boundaries/unknown").status_code == 422

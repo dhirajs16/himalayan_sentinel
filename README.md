@@ -52,7 +52,7 @@ The helper also prepares broader lake/historical context and starts the 30-minut
 
 The public **Explore district evidence** section and **/evidence?district=rasuwa** show the broader lake inventory, historical GLOF records, district weather and modelled population context. Staff monitoring contains the same explorer, and the alert composer links to the incident district's evidence. Historical records are not predictions; district membership is geographic context rather than a downstream impact footprint. The original eight regional cards remain explicitly simulated.
 
-Local source files are optional and stay under ignored `data/`; the public source catalog shows what is available. `scripts/import_context_data.py` reproducibly prepares the 2015 inventory and the latest local GLOF CSV revision; it never combines overlapping revisions. WorldPop is summed within district boundaries only after verifying the exact product metadata. All contextual counts are separate from the dangerous-lake monitoring score. See [integration status](docs/integration-status.md), [source catalog](docs/data-catalog.md) and the guided [scope](devpost/scope.md), [requirements](devpost/prd.md), [technical plan](devpost/spec.md) and [build record](devpost/checklist.md).
+Licensed boundaries ship in `backend/assets/boundaries/` with attribution and source hashes. Other local source files are optional and stay under ignored `data/`; the public source catalog shows what is available. `scripts/import_context_data.py` reproducibly prepares the 2015 inventory and the latest local GLOF CSV revision; it never combines overlapping revisions. WorldPop is summed within district boundaries only after verifying the exact product metadata. All contextual counts are separate from the dangerous-lake monitoring score. See [integration status](docs/integration-status.md), [source catalog](docs/data-catalog.md) and the guided [scope](devpost/scope.md), [requirements](devpost/prd.md), [technical plan](devpost/spec.md) and [build record](devpost/checklist.md).
 
 The API migrates on startup as well; the explicit migration command is useful for deployment checks. Both seeds and imports are idempotent. No database or original dataset is committed. Without licensed local lake files, the public lake section shows an honest empty state; the original eight-region simulation remains available.
 
@@ -95,6 +95,8 @@ Demo account values are supplied **only in `.env.example`**, then read from envi
 
 ## Tests and checks
 
+Current preparation results, publication audit and remaining entrant actions are recorded in [submission status](devpost/submission-status.md) and the [repository handoff](docs/repository-handoff.md). Video work is deferred; no submission or eligibility approval is implied by passing checks.
+
 ```powershell
 cd backend
 uv run pytest -q
@@ -135,7 +137,7 @@ Local audit: 47 PDGLs (21 Nepal, 25 China, 1 India), 3,624 broader inventory lak
 
 ICIMOD. (2020). Potentially dangerous glacial lakes in the Koshi, Gandaki, and Karnali river basins of Nepal, the Tibet Autonomous Region of China, and India [Data set]. ICIMOD. https://doi.org/10.26066/RDS.1971950
 
-Source metadata permits lake-data use with attribution. WorldPop raster tags and GLOF metadata state CC BY 4.0; boundary licence/origin needs verification before redistribution. OpenStreetMap attribution is displayed on maps; optional weather is attributed to Open-Meteo. Full provenance, schemas, agreements and integrity results: [data catalog](docs/data-catalog.md), [generated file audit](docs/data-audit.md).
+Source metadata permits lake-data use with attribution. WorldPop raster tags and GLOF metadata state CC BY 4.0; the runtime boundaries are now bundled from Open Knowledge Nepal under CC BY 4.0 with a pinned revision and hashes. Original unverified boundaries remain excluded and unused. OpenStreetMap attribution is displayed on maps; optional weather is attributed to Open-Meteo. Full provenance, schemas, agreements and integrity results: [data catalog](docs/data-catalog.md), [generated file audit](docs/data-audit.md).
 
 The regional trends, river readings, population exposure and initial counts are labelled simulated. No calibrated flood footprint, actual snowmelt estimate, satellite lake change, verified emergency-resource directory, real notification delivery or production guest verification is configured. No ML model is forced onto outcome-only historical data. Missing data reduces evidence coverage; it never establishes safety.
 

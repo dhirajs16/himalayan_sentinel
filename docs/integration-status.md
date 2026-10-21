@@ -20,7 +20,7 @@ It writes derived `context.json` under ignored `backend/data/processed/` using a
 - `/api/v1/public/context/population/rasuwa`
 - `/api/v1/public/context/weather/rasuwa`
 
-The source catalog works when optional datasets are absent, with explicit unavailable states. Administrative boundaries also need verified provenance and redistribution rights before public redistribution; code licensing does not grant dataset rights.
+The source catalog works when optional datasets are absent, with explicit unavailable states. Runtime administrative boundaries have been replaced with pinned Open Knowledge Nepal CC BY 4.0 data, bundled with attribution and hashes. The original unverified copies remain ignored and unused. Code licensing does not replace dataset licenses.
 
 ## Population
 

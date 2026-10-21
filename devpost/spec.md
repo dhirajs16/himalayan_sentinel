@@ -87,3 +87,9 @@ Implements `prd.md > Look and Feel`. Extend the existing light teal cards and re
 ## Decisions and Open Issues
 
 The learner asked whether AI keys unlock live data. The agreed investigation separates data-source access from model access: verify actual Open-Meteo success and cache behavior without a Gemini key. All implementation choices derive from the delegated scope; no independent scientific calibration or external-service access is inferred. Hands-on user feedback and final submission artifacts remain truthfully recorded as pending until performed.
+
+## Submission preparation revision - 19 October 2026
+
+Runtime administrative boundaries use `backend/app/boundaries.py` and the pinned, licensed assets in `backend/assets/boundaries/`. Public GeoJSON routes and spatial imports use the same bundle as context filtering and population summaries. Synthetic tests explicitly inject custom boundary directories. The source manifest records upstream hashes; original raw boundaries are excluded and unused. Boundary changes invalidate population caches. Evidence and map panels display source attribution.
+
+Repository: https://github.com/dhirajs16/himalayan_sentinel. Public access remains to be verified without authentication. Video recording/editing/upload are explicitly deferred as of 21 October; see `../docs/demo-checklist.md`. A public video URL is still required. `submission-status.md` tracks remaining shipping work and `submission-workbook.md` holds prompts for entrant-written answers. Public organizer guidance on Skill Pack timing was found on 21 October; see `../docs/organizer-clarification.md` before claiming eligibility.

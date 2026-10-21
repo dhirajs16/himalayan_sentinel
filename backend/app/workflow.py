@@ -24,6 +24,7 @@ from sqlalchemy import and_, func, select
 from sqlalchemy.sql import Select
 
 from . import db
+from .boundaries import BOUNDARY_LICENSE, BOUNDARY_SOURCE, boundary_path
 from .config import ROOT, settings
 from .providers import (
     SAFETY,
@@ -344,13 +345,17 @@ def lake_map():
 
 @router.get("/public/boundaries/{kind}")
 def boundaries(kind: Literal["districts", "provinces"]):
-    path = ROOT / "data/GeoJson" / f"{kind}.json"
+    path = boundary_path(kind)
     if not path.exists():
         raise HTTPException(404, "Boundary dataset not installed")
     return FileResponse(
         path,
         media_type="application/geo+json",
-        headers={"Cache-Control": "public, max-age=86400"},
+        headers={
+            "Cache-Control": "public, max-age=86400",
+            "Link": f'<{BOUNDARY_LICENSE}>; rel="license"',
+            "X-Data-Source": BOUNDARY_SOURCE,
+        },
     )
 
 

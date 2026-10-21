@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / "backend"))
 from preprocess_datasets import preprocess
 
 from app import db
+from app.boundaries import boundary_path
 from app.risk_engine import assess_lake
 
 
@@ -55,7 +56,7 @@ def import_data():
                 )
         if db.engine.dialect.name == "postgresql":
             for kind in ("districts", "provinces"):
-                source = ROOT / "data/GeoJson" / f"{kind}.json"
+                source = boundary_path(kind)
                 if not source.exists():
                     continue
                 for index, feature in enumerate(

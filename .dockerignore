@@ -1,6 +1,7 @@
 .git
 **/node_modules
 **/.next
+**/.next-dev
 **/.next-test
 **/*.tsbuildinfo
 **/.venv
@@ -11,7 +12,11 @@
 .uv-cache
 .env
 **/.env
+**/.env.*
+!**/.env.example
 **/.env.local
+/devpost/learner-profile.md
+/devpost/submission-draft.md
 backend/var
 backend/data/processed
 data

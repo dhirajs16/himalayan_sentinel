@@ -20,7 +20,7 @@
 </svg>
 <h2>Follow one action: inspect district evidence</h2>
 <ol class="route">
-<li><strong>1 · Prepare real source records</strong><code>backend/app/context_data.py<br>import_context · ContextStore.population</code><p>The importer chooses the latest historical revision and preserves original IDs. Population masks select valid pixel centres within a district, without labelling the result as exposure.</p></li>
+<li><strong>1 · Prepare real source records</strong><code>backend/app/context_data.py<br>import_context · ContextStore.population</code><p>The importer chooses the latest historical revision and preserves original IDs. District geometry comes from the pinned Open Knowledge Nepal CC BY 4.0 bundle in backend/assets/boundaries, selected by backend/app/boundaries.py. Population masks select valid pixel centres within a district, without labelling the result as exposure.</p></li>
 <li><strong>2 · Request a bounded view</strong><code>backend/app/context_api.py<br>lakes · events · population</code><p>The API filters the prepared records and returns a page with its total. Missing files and absent values remain explicit. The public API does not expose private citizen evidence.</p></li>
 <li><strong>3 · Inspect the result</strong><code>frontend/components/evidence-explorer.tsx<br>EvidenceExplorer · useContextResource</code><p>The browser displays the map, searchable list, retained attributes and source dates. Obsolete responses cannot overwrite the newly selected district's panels.</p></li>
 </ol>

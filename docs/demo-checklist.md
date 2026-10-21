@@ -1,6 +1,31 @@
 # Integrated demonstration checks
 
-This is a technical sequence for recording the working application, not narration or submission copy. Keep the final video below the event's three-minute viewing limit. Write the spoken explanation and Devpost answers yourself.
+Video work is deferred by the entrant's instruction on 21 October 2026. Do not run the recorder, edit footage or upload it during the remaining technical preparation. Existing local footage has not been accepted as a reviewed submission video.
+
+The handoff-mentioned capture under `frontend/test-results/demo/` was not found
+after the preparation tests. The original default Playwright output cleanup may
+have removed it; no other WebM copy was found in the checked repository output
+and temporary Playwright artifact folders. Routine output is now explicitly
+`test-results/e2e`, a sibling of `test-results/demo`, to prevent this collision.
+No replacement recording was made; video remains deferred.
+
+The following is a technical reference for later recording. The [event overview](https://learn-ai-basics.devpost.com/?ref_medium=portfolio) currently requests a 1-3 minute working demonstration; confirm the actual form's constraints before recording. The entrant writes their own narration and personal reflections.
+
+## Automated local footage (for later use)
+
+From `frontend`, run `npx playwright install ffmpeg` once, then `npm run demo:record`.
+The recorder starts temporary services on 8010/3100 with an isolated SQLite database,
+public example accounts, staged evidence and mock delivery. It captures a 1440×900
+WebM under ignored `frontend/test-results/demo/`. It never publishes a notice in
+the working PostgreSQL database. Other local data is read through the actual APIs;
+weather in this recording environment is explicitly simulated. The footage has no
+spoken narration or music. Review it, supply your own explanation if desired, and
+upload the reviewed video publicly to YouTube/Vimeo. Local footage alone is not a
+submission video link. Setup/authentication pauses can be trimmed; retain the
+visible review, approval, publication and resolution steps.
+
+The script is `frontend/demo/record.spec.ts`; the separate recording configuration
+keeps this optional capture out of the ordinary browser test suite.
 
 ## Preparation
 
